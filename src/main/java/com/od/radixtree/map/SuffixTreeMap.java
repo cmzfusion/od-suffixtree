@@ -25,14 +25,20 @@ public class SuffixTreeMap<V> implements RestrictedMap<V> {
     //plane onwards
     private int lastTerminator = Character.MAX_VALUE + 1;
 
-    private SingleValueSupplier<V> singleValueSupplier = new SingleValueSupplier<V>();
-
     private CharSequenceWithIntTerminatorAdapter intTerminatorAdapter = new CharSequenceWithIntTerminatorAdapter();
     private MutableSequence mutableSequence = new MutableSequence();
 
-    private Map<CharSequence, CharSequenceWithAssignableTerminalChar> terminalNodesBySequence = new HashMap<CharSequence, CharSequenceWithAssignableTerminalChar>();
+    private Map<CharSequence, CharSequenceWithAssignableTerminalChar> terminalNodesBySequence = new HashMap<>();
     
-    private TreeConfig<V> treeConfig = new TreeConfig<V>(new ChildIteratorPool<V>(), singleValueSupplier);
+    private final TreeConfig<V> treeConfig;
+    
+    public SuffixTreeMap() {
+        treeConfig = new TreeConfig<V>(new ChildIteratorPool<V>(), new SingleValueSupplier<V>());
+    }
+    
+    public SuffixTreeMap(ValueSupplier<V> valueSupplier) {
+        treeConfig = new TreeConfig<V>(new ChildIteratorPool<V>(), valueSupplier);
+    }
     
     public void put(CharSequence s, V value) {
         int terminalChar = lastTerminator++;
@@ -45,7 +51,7 @@ public class SuffixTreeMap<V> implements RestrictedMap<V> {
     private void addAllSuffixes(MutableCharSequence s, CharSequenceWithAssignableTerminalChar n, V value) {
         for ( int c = 0; c < n.length() - 1; c++) {
             s.setStart(c);
-            radixTree.add(mutableSequence, value, treeConfig);
+            radixTree.add(s, value, treeConfig);
         }
     }
 

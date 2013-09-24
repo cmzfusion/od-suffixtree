@@ -17,13 +17,20 @@ public class RadixTreeMap<V> implements RestrictedMap<V> {
     
     private RadixTree<V> radixTree = new RadixTree<V>();
     
-    private SingleValueSupplier<V> singleValueSupplier = new SingleValueSupplier<V>();
     
     private CharSequenceWithIntTerminatorAdapter intTerminatorAdapter = new CharSequenceWithIntTerminatorAdapter();
     private MutableSequence mutableSequence = new MutableSequence();
 
-    private TreeConfig<V> treeConfig = new TreeConfig<V>(new ChildIteratorPool<V>(), singleValueSupplier);
+    private final TreeConfig<V> treeConfig;
 
+    public RadixTreeMap() {
+        treeConfig = new TreeConfig<V>(new ChildIteratorPool<V>(), new SingleValueSupplier<V>());
+    }
+    
+    public RadixTreeMap(ValueSupplier<V> valueSupplier) {
+        treeConfig = new TreeConfig<V>(new ChildIteratorPool<V>(), valueSupplier);    
+    }
+    
     @Override
     public void put(CharSequence s, V value) {
         mutableSequence.setSegment(new CharSequenceWithTerminalNode(s));

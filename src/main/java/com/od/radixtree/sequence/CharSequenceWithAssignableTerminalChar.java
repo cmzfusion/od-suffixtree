@@ -27,13 +27,13 @@ public class CharSequenceWithAssignableTerminalChar implements CharSequenceWithI
 
     @Override
     public char charAt(int index) {
-        return index == length() - 1 ?
+        return index == s.length() ?
                 TERMINATOR_CHAR_REPRESENTATION :
                 s.charAt(index);
     }
     
     public int intAt(int index) {
-        return index == length() - 1 ?
+        return index == s.length() ?
                 terminalInt :
                 s.charAt(index); 
     }
