@@ -14,6 +14,6 @@ import org.junit.runner.RunWith;
 public class ChorusTestSuite {
 
     public static String getChorusArgs() {
-        return "-f src/test/java/com/od/filtertable/radixtree -h com.od -e ";        
+        return "-f src/test/java/com/od/radixtree -h com.od -e ";        
     }
 }
