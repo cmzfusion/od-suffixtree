@@ -32,7 +32,7 @@ public interface ValueSupplier<V> {
     ValueSupplierResult removeValue(V value, Object currentValue);
 
     
-    void addValuesToCollection(Collection<V> collection, Object currentValue);
+    void addValuesToCollection(Collection<V> collection, Object currentValue, ValueFilter<V> valueFilter);
     
     
     public static class ValueSupplierResult<V> {

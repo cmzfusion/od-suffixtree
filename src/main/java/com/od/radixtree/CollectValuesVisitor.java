@@ -14,20 +14,18 @@ public class CollectValuesVisitor<V> implements TreeVisitor<V> {
     private Collection<V> targetCollection;
     private int maxValueCount;
     private TreeConfig<V> treeConfig;
+    private ValueFilter<V> valueFilter;
 
-    public CollectValuesVisitor(Collection<V> targetCollection, TreeConfig<V> treeConfig) {
-        this(targetCollection, Integer.MAX_VALUE, treeConfig);
-    }
-
-    public CollectValuesVisitor(Collection<V> targetCollection, int maxValueCount, TreeConfig<V> treeConfig) {
+    public CollectValuesVisitor(Collection<V> targetCollection, int maxValueCount, TreeConfig<V> treeConfig, ValueFilter valueFilter) {
         this.treeConfig = treeConfig;
+        this.valueFilter = valueFilter;
         this.targetCollection = new ValueLimitingCollectionWrapper<V>(targetCollection, maxValueCount);
         this.maxValueCount = maxValueCount;
     }
 
     public boolean visit(RadixTree<V> radixTree) {
         if ( radixTree.isTerminalNode()) {
-            radixTree.getValues(targetCollection, treeConfig);
+            radixTree.getValues(targetCollection, treeConfig, valueFilter);
         }
         return targetCollection.size() < maxValueCount;
     }

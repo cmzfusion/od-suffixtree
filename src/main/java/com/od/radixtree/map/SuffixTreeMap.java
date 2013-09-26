@@ -87,17 +87,21 @@ public class SuffixTreeMap<V> implements RestrictedMap<V> {
         return result.size() > 0 ? result.get(0) : null;
     }
 
+    @Override
     public <E extends Collection<V>> E addStartingWith(CharSequence s, E collection) {
-        intTerminatorAdapter.setCharSequence(s);
-        mutableSequence.setSegment(intTerminatorAdapter); //do not add terminal node
-        radixTree.get(mutableSequence, collection, treeConfig);
-        return collection;
+        return addStartingWith(s, collection, Integer.MAX_VALUE, (ValueFilter<V>)ValueFilter.NULL_VALUE_FILTER);
+    }
+    
+    @Override
+    public <E extends Collection<V>> E addStartingWith(CharSequence s, E collection, int maxItems) {
+       return addStartingWith(s, collection, maxItems, (ValueFilter<V>)ValueFilter.NULL_VALUE_FILTER);
     }
 
-    public <E extends Collection<V>> E addStartingWith(CharSequence s, E collection, int maxItems) {
+    @Override    
+    public <E extends Collection<V>> E addStartingWith(CharSequence s, E collection, int maxItems, ValueFilter<V> valueFilter) {
         intTerminatorAdapter.setCharSequence(s);
         mutableSequence.setSegment(intTerminatorAdapter); //do not add terminal node
-        radixTree.get(mutableSequence, collection, maxItems, treeConfig);
+        radixTree.get(mutableSequence, collection, maxItems, treeConfig, valueFilter);
         return collection;
     }
 

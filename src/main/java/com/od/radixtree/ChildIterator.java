@@ -13,6 +13,7 @@ public class ChildIterator<V> {
     private RadixTree<V> parent;
     private RadixTree<V> currentNode;
     private RadixTree<V> lastNode;
+    private static long inserts;
         
     public void setParent(RadixTree<V> parent, boolean isTerminal) {
         this.parent = parent;
@@ -40,6 +41,11 @@ public class ChildIterator<V> {
             parent.payload = newNode; 
         }
         newNode.nextPeer = currentNode;
+        
+        inserts++;
+        if ( inserts % 1000 == 0 ) {
+            System.out.println(inserts + " inserts");
+        }
     }
 
     public void replace(RadixTree<V> replacementNode) {

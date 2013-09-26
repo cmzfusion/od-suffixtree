@@ -32,7 +32,11 @@ public class HashSetValueSupplier<V> implements ValueSupplier<V> {
     }
 
     @Override
-    public void addValuesToCollection(Collection<V> collection, Object currentValue) {
-        collection.addAll((HashSet<V>)currentValue);
+    public void addValuesToCollection(Collection<V> collection, Object currentValue, ValueFilter<V> valueFilter) {
+        for ( V value: (HashSet<V>)currentValue) {
+            if ( valueFilter.include(value)) {
+                collection.add(value);
+            }
+        }
     }
 }

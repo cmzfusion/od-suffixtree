@@ -2,6 +2,7 @@ package com.od.radixtree.map;
 
 import com.od.radixtree.TreeConfig;
 import com.od.radixtree.TreeVisitor;
+import com.od.radixtree.ValueFilter;
 
 import java.util.Collection;
 
@@ -21,8 +22,10 @@ public interface RestrictedMap<V> {
     V get(CharSequence s);
 
     <E extends Collection<V>> E addStartingWith(CharSequence s, E collection);
+    
+    <E extends Collection<V>> E addStartingWith(CharSequence s, E collection, int maxItems);    
 
-    <E extends Collection<V>> E addStartingWith(CharSequence s, E collection, int maxItems);
+    <E extends Collection<V>> E addStartingWith(CharSequence s, E collection, int maxItems, ValueFilter<V> valueFilter);
 
     void accept(TreeVisitor<V> v);
 

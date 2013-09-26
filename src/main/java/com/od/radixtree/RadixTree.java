@@ -21,6 +21,8 @@ public class RadixTree<V> implements CharSequenceWithIntTerminator {
     private CharSequenceWithIntTerminator immutableSequence;
     private short start;
     private short end;
+    
+    private static long comparisons;
 
     public RadixTree() {}
     
@@ -47,6 +49,10 @@ public class RadixTree<V> implements CharSequenceWithIntTerminator {
         while (i.isValid()) {
             RadixTree<V> currentNode = i.getCurrentNode();
             int comparison = CharUtils.compareFirstChar(s, currentNode);
+            comparisons++;
+            if ( comparisons % 1000000 == 0) {
+                System.out.println(comparisons + " comparisons");
+            }
             if ( comparison == 0 ) {
                 int matchingChars = CharUtils.getSharedPrefixCount(s, currentNode);
                 if ( matchingChars == s.length() /* must be a terminal node since s must end in a terminal char*/
@@ -121,16 +127,18 @@ public class RadixTree<V> implements CharSequenceWithIntTerminator {
      * Get into target collection values from all nodes prefixed with char sequence
      */
     public Collection<V> get(CharSequenceWithIntTerminator c, Collection<V> targetCollection, TreeConfig<V> treeConfig) {
-        CollectValuesVisitor<V> collectValuesVisitor = new CollectValuesVisitor<V>(targetCollection, treeConfig);
-        accept(new MutableSequence(c), collectValuesVisitor, treeConfig);
-        return targetCollection;
+        return get(c, targetCollection, Integer.MAX_VALUE, treeConfig, (ValueFilter<V>)ValueFilter.NULL_VALUE_FILTER);
     }
     
     /**
      * Get into target collection values from all nodes prefixed with char sequence, to a limit of maxResults values
      */
     public <R extends Collection<V>> R get(CharSequenceWithIntTerminator c, R targetCollection, int maxResults, TreeConfig<V> treeConfig) {
-        CollectValuesVisitor<V> collectValuesVisitor = new CollectValuesVisitor<V>(targetCollection, maxResults, treeConfig);
+        return get(c, targetCollection, maxResults, treeConfig, (ValueFilter<V>)ValueFilter.NULL_VALUE_FILTER);
+    }
+    
+    public <R extends Collection<V>> R get(CharSequenceWithIntTerminator c, R targetCollection, int maxResults, TreeConfig<V> treeConfig, ValueFilter<V> valueFilter) {
+        CollectValuesVisitor<V> collectValuesVisitor = new CollectValuesVisitor<V>(targetCollection, maxResults, treeConfig, valueFilter);
         accept(new MutableSequence(c), collectValuesVisitor, treeConfig);
         return targetCollection;
     }
@@ -230,9 +238,9 @@ public class RadixTree<V> implements CharSequenceWithIntTerminator {
         }
     }
 
-    public Collection<V> getValues(Collection<V> targetCollection, TreeConfig<V> treeConfig) {
+    public Collection<V> getValues(Collection<V> targetCollection, TreeConfig<V> treeConfig, ValueFilter<V> valueFilter) {
         if ( isTerminalNode() && payload != null ) { //should only ever be adding to a terminal node 
-            treeConfig.getValueSupplier().addValuesToCollection(targetCollection, payload);
+            treeConfig.getValueSupplier().addValuesToCollection(targetCollection, payload, valueFilter);
         } 
         return targetCollection;
     }

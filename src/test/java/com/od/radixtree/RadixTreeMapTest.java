@@ -1,12 +1,14 @@
 package com.od.radixtree;
 
 import com.od.radixtree.map.RadixTreeMap;
+import com.od.radixtree.map.SuffixTreeMap;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * User: nick
@@ -15,7 +17,7 @@ import java.util.List;
  */
 public class RadixTreeMapTest {
 
-    RadixTreeMap<Object> m = new RadixTreeMap<Object>();
+    SuffixTreeMap<Object> m = new SuffixTreeMap<Object>();
 //    TreeMap<String, Object> m = new TreeMap<String,Object>();
     
     public static void main(String[] args) throws Exception {

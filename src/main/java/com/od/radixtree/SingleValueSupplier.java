@@ -20,7 +20,9 @@ public class SingleValueSupplier<V> implements ValueSupplier<V> {
         return result;
     }
 
-    public void addValuesToCollection(Collection<V> collection, Object currentValue) {
-        collection.add((V)currentValue);
+    public void addValuesToCollection(Collection<V> collection, Object currentValue, ValueFilter<V> valueFilter) {
+        if ( valueFilter.include((V)currentValue)) {
+            collection.add((V)currentValue);
+        }
     }
 }
