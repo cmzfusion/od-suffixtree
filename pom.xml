@@ -6,7 +6,7 @@
     <artifactId>od-suffixtree</artifactId>
     <name>od-suffixtree</name>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <build>
 
         <!-- Copy chorus resources from the test/handlers and test/junit subtree, so resource files
