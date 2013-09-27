@@ -12,8 +12,10 @@ import java.util.LinkedList;
  * User: nick
  * Date: 04/06/13
  * Time: 08:31
+ * 
+ * A RadixTree / compact prefix tree based Map
  */
-public class RadixTreeMap<V> implements RestrictedMap<V> {
+public class RadixTreeMap<V> implements TrieMap<V> {
     
     private RadixTree<V> radixTree = new RadixTree<V>();
     
@@ -57,17 +59,17 @@ public class RadixTreeMap<V> implements RestrictedMap<V> {
     }
     
     @Override
-    public <E extends Collection<V>> E addStartingWith(CharSequence s, E collection) {
-        return addStartingWith(s, collection, Integer.MAX_VALUE, (ValueFilter<V>)ValueFilter.NULL_VALUE_FILTER);
+    public <E extends Collection<V>> E getStartingWith(CharSequence s, E collection) {
+        return getStartingWith(s, collection, Integer.MAX_VALUE, (ValueFilter<V>) ValueFilter.NULL_VALUE_FILTER);
     }
     
     @Override
-    public <E extends Collection<V>> E addStartingWith(CharSequence s, E collection, int maxItems) {
-       return addStartingWith(s, collection, maxItems, (ValueFilter<V>)ValueFilter.NULL_VALUE_FILTER);
+    public <E extends Collection<V>> E getStartingWith(CharSequence s, E collection, int maxItems) {
+       return getStartingWith(s, collection, maxItems, (ValueFilter<V>) ValueFilter.NULL_VALUE_FILTER);
     }
 
     @Override
-    public <E extends Collection<V>> E addStartingWith(CharSequence s, E collection, int maxItems, ValueFilter<V> valueFilter) {
+    public <E extends Collection<V>> E getStartingWith(CharSequence s, E collection, int maxItems, ValueFilter<V> valueFilter) {
         intTerminatorAdapter.setCharSequence(s);
         mutableSequence.setSegment(intTerminatorAdapter); //do not add terminal node
         radixTree.get(mutableSequence, collection, maxItems, treeConfig, valueFilter);
