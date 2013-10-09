@@ -104,6 +104,24 @@
       And I add a value VAL3 under key AB
       Then a search for A returns VAL3, VAL1, VAL2
       And a search with maxItems=2 for A returns VAL3, VAL1
+  
+    @SELECT
+    Scenario: Multiple values per node
+      Given I create a radix tree with multiple values per node
+      And I add a value VAL1 under key ABC
+      And I add a value VAL2 under key ABC
+      And I add a value VAL3 under key ABC
+      Then a search for A gives the set VAL1, VAL2, VAL3
+  
+    @SELECT
+    Scenario: Multiple values in two nodes
+      Given I create a radix tree with multiple values per node
+      And I add a value VAL1 under key ABC
+      And I add a value VAL2 under key ABC
+      And I add a value VAL3 under key AB
+      And I add a value VAL4 under key AB
+      Then a search for A gives the set VAL1, VAL2, VAL3, VAL4
+  
 
   #And I show the tree structure
       

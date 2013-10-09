@@ -15,8 +15,13 @@ import org.chorusbdd.chorus.annotations.Step;
 public class RadixTreeHandler extends AbstractRadixTreeHandler {
 
     @Step("I create a radix tree")
-    public void createIndex() {
+    public void createTree() {
         tree = new RadixTreeMap<String>();
+    }
+
+    @Step("I create a radix tree with multiple values per node")
+    public void createMultipleValueTree() {
+        tree = new RadixTreeMap<String>(new HashSetValueSupplier<String>());
     }
 
 }
