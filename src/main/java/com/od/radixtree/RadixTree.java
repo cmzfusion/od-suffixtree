@@ -22,8 +22,6 @@ public class RadixTree<V> implements CharSequenceWithIntTerminator {
     private short start;
     private short end;
     
-    private static long comparisons;
-
     public RadixTree() {}
     
     /**
@@ -49,10 +47,6 @@ public class RadixTree<V> implements CharSequenceWithIntTerminator {
         while (i.isValid()) {
             RadixTree<V> currentNode = i.getCurrentNode();
             int comparison = CharUtils.compareFirstChar(s, currentNode);
-            comparisons++;
-            if ( comparisons % 1000000 == 0) {
-                System.out.println(comparisons + " comparisons");
-            }
             if ( comparison == 0 ) {
                 int matchingChars = CharUtils.getSharedPrefixCount(s, currentNode);
                 if ( matchingChars == s.length() /* must be a terminal node since s must end in a terminal char*/
